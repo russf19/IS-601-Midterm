@@ -1,7 +1,7 @@
-from decimal import Decimal
-from calculator.history import History
+from app.commands.command.command import Command
+from app.commands.history.history import History
 
-class Calculation:
+class CalculationCommand(Command):
 
     @staticmethod
     # adds addition to calculator

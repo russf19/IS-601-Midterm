@@ -1,4 +1,4 @@
-# Master command class thats sets the structure of all commands
+#Master command class thats sets the structure of all commands
 
 class Command:
     def execute(self):
