@@ -1,7 +1,27 @@
-from app.commands.operation.operation import AddCommand, SubtractCommand, MultiplyCommand, DivideCommand, GetHistoryCommand, AddHistoryCommand, DeleteHistoryCommand
+import os
+import importlib.util
+from app.commands.operation.operation import AddCommand, SubtractCommand, MultiplyCommand, DivideCommand, GetHistoryCommand, AddHistoryCommand, DeleteHistoryCommand, Command
 from app.commands.exit.exit import ExitCommand
 from app.commands.greet.greet import GreetCommand
 from app.commands.goodbye.goodbye import GoodbyeCommand
+
+PLUGIN_DIR = 'app/commands'
+def load_plugins():
+    plugins = {}
+    for filename in os.listdir(PLUGIN_DIR):
+        if filename.endswith('.py') and not filename.startswith('__'):
+            module_name = filename[:-3]
+            path = os.path.join(PLUGIN_DIR, filename)
+            module_spec = importlib.util.spec_from_file_location(module_name, path)
+            module = importlib.util.module_from_spec(module_spec)
+            module_spec.loader.exec_module(module)
+            
+            for attribute_name in dir(module):
+                attribute = getattr(module, attribute_name)
+                if issubclass(attribute, Command) and attribute is not Command:
+                    # Assuming each command class has a unique name
+                    plugins[attribute_name.lower()] = attribute()
+    return plugins
 
 def get_command(command_name_str):
     commands_dict = {
