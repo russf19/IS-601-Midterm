@@ -1,5 +1,5 @@
-# Russell Fong IS601 Homework 5
+# Russell Fong IS601 Homework 6
 
-This is my updated calculator for project 5! 
+This is my updated calculator for project 6! 
 
-Each feature is now a command/plugin and they are in their own folder.
+Added GitHub Actions and Logging features.
