@@ -1,11 +1,33 @@
 import os
 import importlib.util
+import logging
+import logging.config
+from dotenv import load_dotenv
 from app.commands.operation.operation import AddCommand, SubtractCommand, MultiplyCommand, DivideCommand, GetHistoryCommand, AddHistoryCommand, DeleteHistoryCommand, Command
 from app.commands.exit.exit import ExitCommand
 from app.commands.greet.greet import GreetCommand
 from app.commands.goodbye.goodbye import GoodbyeCommand
 
-PLUGIN_DIR = 'app/commands'
+#Loading environment variables
+load_dotenv()
+
+def configure_logging():
+    logging_conf_path = os.getenv('logging_conf_path', 'logging.conf')
+    if os.path.exists(logging_conf_path):
+        logging.config.fileConfig(logging_conf_path, disable_existing_loggers=False)
+    else:
+        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    logging.info("Logging configured")
+
+def load_environment_variables():
+    settings = {key: value for key, value in os.environ.items()}
+    logging.info("Environment variables loaded.")
+    return settings
+
+def get_environemtn_variable(settings, env_var: str = 'ENVIRONMENT'):
+    return settings.get(env_var, None)
+
+PLUGIN_DIR = 'app/plugins'
 def load_plugins():
     plugins = {}
     for filename in os.listdir(PLUGIN_DIR):
@@ -14,14 +36,15 @@ def load_plugins():
             path = os.path.join(PLUGIN_DIR, filename)
             module_spec = importlib.util.spec_from_file_location(module_name, path)
             module = importlib.util.module_from_spec(module_spec)
-            module_spec.loader.exec_module(module)
-            
+            module_spec.loader.exec_module(module)            
             for attribute_name in dir(module):
                 attribute = getattr(module, attribute_name)
                 if issubclass(attribute, Command) and attribute is not Command:
                     # Assuming each command class has a unique name
                     plugins[attribute_name.lower()] = attribute()
     return plugins
+
+settings = load_environment_variables()
 
 def get_command(command_name_str):
     commands_dict = {
@@ -38,7 +61,12 @@ def get_command(command_name_str):
     }
     return commands_dict.get(command_name_str)
 
+#Load environment variables
+
 def main():
+    configure_logging()
+    
+    logging.info("Welcome to my calculator! To get started type a command and numbers. If you want to exit, type 'exit'.")
     print("Welcome to my calculator! To get started type a command and numbers. If you want to exit, type 'exit'.")
 
     while True:
