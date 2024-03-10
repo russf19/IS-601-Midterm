@@ -3,12 +3,14 @@ import importlib.util
 import logging
 import logging.config
 from dotenv import load_dotenv
-from app.commands.operation.operation import AddCommand, SubtractCommand, MultiplyCommand, DivideCommand, GetHistoryCommand, AddHistoryCommand, DeleteHistoryCommand, Command
+from app.commands.operation.operation import AddCommand, SubtractCommand, MultiplyCommand, DivideCommand, GetHistoryCommand, AddHistoryCommand, DeleteHistoryCommand
+from app.plugins.plugin.plugin import CommandPlugin
+from app.commands.command.command import Command
 from app.commands.exit.exit import ExitCommand
 from app.commands.greet.greet import GreetCommand
 from app.commands.goodbye.goodbye import GoodbyeCommand
 
-#Loading environment variables
+# Load environment variables
 load_dotenv()
 
 def configure_logging():
@@ -24,30 +26,38 @@ def load_environment_variables():
     logging.info("Environment variables loaded.")
     return settings
 
-def get_environemtn_variable(settings, env_var: str = 'ENVIRONMENT'):
-    return settings.get(env_var, None)
-
-PLUGIN_DIR = 'app/plugins'
-def load_plugins():
-    plugins = {}
-    for filename in os.listdir(PLUGIN_DIR):
-        if filename.endswith('.py') and not filename.startswith('__'):
-            module_name = filename[:-3]
-            path = os.path.join(PLUGIN_DIR, filename)
-            module_spec = importlib.util.spec_from_file_location(module_name, path)
-            module = importlib.util.module_from_spec(module_spec)
-            module_spec.loader.exec_module(module)            
-            for attribute_name in dir(module):
-                attribute = getattr(module, attribute_name)
-                if issubclass(attribute, Command) and attribute is not Command:
-                    # Assuming each command class has a unique name
-                    plugins[attribute_name.lower()] = attribute()
-    return plugins
-
 settings = load_environment_variables()
 
-def get_command(command_name_str):
-    commands_dict = {
+def get_environment_variable(settings, env_var: str = 'ENVIRONMENT'):
+    return settings.get(env_var, None)
+
+def load_plugins(directory):
+    commands = {}
+    for root, dirs, files in os.walk(directory):
+        for filename in files:
+            if filename.endswith('.py') and not filename.startswith('__'):
+                filepath = os.path.join(root, filename)
+                module_name = os.path.splitext(os.path.basename(filepath))[0]
+                spec = importlib.util.spec_from_file_location(module_name, filepath)
+                module = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(module)
+                for attribute_name in dir(module):
+                    attribute = getattr(module, attribute_name)
+                    if isinstance(attribute, type) and issubclass(attribute, CommandPlugin):
+                        command_instance = attribute()
+                        command_key = command_instance.__class__.__name__.lower().replace('command', '')
+                        commands[command_key] = command_instance
+    return commands
+
+def get_command(commands, command_name_str):
+    command = commands.get(command_name_str)
+    return command
+
+def main():
+    configure_logging()
+    
+    commands = load_plugins(os.path.join('app', 'plugins'))
+    commands.update({
         'add': AddCommand(),
         'subtract': SubtractCommand(),
         'multiply': MultiplyCommand(),
@@ -58,14 +68,8 @@ def get_command(command_name_str):
         'get_history': GetHistoryCommand(),
         'add_history': AddHistoryCommand(),
         'delete_history': DeleteHistoryCommand()
-    }
-    return commands_dict.get(command_name_str)
+    })
 
-#Load environment variables
-
-def main():
-    configure_logging()
-    
     logging.info("Welcome to my calculator! To get started type a command and numbers. If you want to exit, type 'exit'.")
     print("Welcome to my calculator! To get started type a command and numbers. If you want to exit, type 'exit'.")
 
@@ -75,8 +79,8 @@ def main():
             continue
 
         command_parts = command_input.split()
-        command_name = command_parts[0]
-        command = get_command(command_name)
+        command_name = command_parts[0].strip().lower()
+        command = get_command(commands, command_name)
 
         if not command:
             print("Error. This is not a valid command.")
@@ -91,13 +95,26 @@ def main():
                 print("Invalid numbers.")
             except Exception as e:
                 print(f"Error: {e}")
-        elif command_name in ['greet', 'goodbye', 'exit']:
-            print(command.execute())
+
+        elif command_name in commands and len(command_parts) == 1:
+            # Executes plugin commands that do not require any arguements
+            try:
+                print(command.execute())
+            except Exception as e:
+                print(f"Error: {e}")
+
         elif command_name == 'add_history' and len(command_parts) > 1:
             record = " ".join(command_parts[1:])
-            print(command.execute(record))
+            try:
+                print(command.execute(record))
+            except Exception as e:
+                print(f"Error: {e}")
+
         elif command_name in ['get_history', 'delete_history']:
-            print(command.execute())
+            try:
+                print(command.execute())
+            except Exception as e:
+                print(f"Error: {e}")
         else:
             print("Invalid command.")
 
