@@ -3,6 +3,8 @@ from app.commands.calculation.calculation import CalculationCommand
 from app.commands.history.history import History
 from app.commands.greet.greet import GreetCommand
 from app.commands.goodbye.goodbye import GoodbyeCommand
+from app.commands.exit.exit import ExitCommand
+from app.plugins.hello_world.helloworld_command import HelloWorldCommand
 
 def test_add():
     #Tests to see if addition works
@@ -44,3 +46,14 @@ def test_goodbye():
     #Tests to see if goodbye command works
     goodbye = GoodbyeCommand()
     assert goodbye.execute() == "Goodbye."
+
+def test_exit():
+    #Tests to see if exit command works
+    exit_command = ExitCommand()
+    with pytest.raises(SystemExit):
+        exit_command.execute()
+
+def test_helloworld():
+    #Tests to see if helloworld command works
+    hello_world = HelloWorldCommand()
+    assert hello_world.execute() == "Hello, World!"
