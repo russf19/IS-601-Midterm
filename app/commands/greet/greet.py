@@ -7,10 +7,5 @@ class test():
 
 class GreetCommand(Command):
     def execute(self):
-        logging.info("Hello World!")
-
-        mydict = {1,2,3,4,5}
-        logging.debug(print(test))
-
-        print("Hello, World!")
+        return "Welcome to my calculator! To get started type a command and numbers. If you want to exit, type 'exit'."
     

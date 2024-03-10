@@ -1,6 +1,8 @@
 import pytest
 from app.commands.calculation.calculation import CalculationCommand
 from app.commands.history.history import History
+from app.commands.greet.greet import GreetCommand
+from app.commands.goodbye.goodbye import GoodbyeCommand
 
 def test_add():
     #Tests to see if addition works
@@ -32,3 +34,13 @@ def test_history():
     History.clear_history()
     CalculationCommand.add(10, 20)
     assert "Added 10 to 20 got 30" in History.get_history()
+
+def test_greet():
+    #Tests to see if greet command works
+    greet = GreetCommand()
+    assert greet.execute() == "Welcome to my calculator! To get started type a command and numbers. If you want to exit, type 'exit'."
+
+def test_goodbye():
+    #Tests to see if goodbye command works
+    goodbye = GoodbyeCommand()
+    assert goodbye.execute() == "Goodbye."
