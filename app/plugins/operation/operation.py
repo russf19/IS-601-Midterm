@@ -1,6 +1,6 @@
 from app.commands.command.command import Command
-from app.commands.calculation.calculation import CalculationCommand
-from app.commands.history.history import History
+from app.plugins.calculation.calculation import CalculationCommand
+from app.plugins.history.history import History
 
 class AddCommand(Command):
     def execute(self, a, b):

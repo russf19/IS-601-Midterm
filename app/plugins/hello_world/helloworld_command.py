@@ -1,6 +1,6 @@
-from app.plugins.plugin.plugin import CommandPlugin
+from app.commands.command.command import Command
 
-class HelloWorldCommand(CommandPlugin):
+class HelloWorldCommand(Command):
     def execute(self):
         return "Hello, World!"
     

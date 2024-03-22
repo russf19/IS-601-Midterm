@@ -1,5 +1,4 @@
 from app.commands.command.command import Command
-import logging
 
 class test():
     myval = 10
