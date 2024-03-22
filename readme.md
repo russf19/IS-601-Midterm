@@ -1,5 +1,7 @@
 # Russell Fong IS601 Homework 6
 
-This is my updated calculator for project 6! 
+This is my midterm project for IS601. This calculator is a continuation of the previous calculator assignments.
+
+
 
 Added GitHub Actions and Logging features.
