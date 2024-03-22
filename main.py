@@ -53,9 +53,13 @@ class CalculatorApp:
         return self
 
 def menu(commands):
-    print("\nAvailable Commands:")
+    print("\nMy Calculator Commands:")
+    # exclude these commands
+    exclude_commands = ['calculation', '']
     for command in sorted(commands.keys()):
-        print(f" - {command}")
+        # Only displays the commands if they are not in the exclude list
+        if command not in exclude_commands:
+            print(f" - {command}")
     print("Type 'exit' to close the calculator.\n")
 
 # Executes the calculator app and starts the loop.

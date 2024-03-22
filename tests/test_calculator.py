@@ -1,9 +1,9 @@
 import pytest
-from app.commands.calculation.calculation import CalculationCommand
-from app.commands.history.history import History
-from app.commands.greet.greet import GreetCommand
-from app.commands.goodbye.goodbye import GoodbyeCommand
-from app.commands.exit.exit import ExitCommand
+from app.plugins.calculation.calculation import CalculationCommand
+from app.plugins.history.history import History
+from app.plugins.greet.greet import GreetCommand
+from app.plugins.goodbye.goodbye import GoodbyeCommand
+from app.plugins.exit.exit import ExitCommand
 from app.plugins.hello_world.helloworld_command import HelloWorldCommand
 
 def test_add():
