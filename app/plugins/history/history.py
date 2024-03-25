@@ -30,9 +30,8 @@ class History:
     @classmethod
     def get_history(cls):
         if cls.history_df.empty:
-            print("No calculations are available. Please enter a command.")
-        else:
-            print(cls.history_df)
+            return "No calculations are available. Please enter a command."
+        return cls.history_df.to_string(index=False)
 
     @classmethod
     def clear_history(cls):

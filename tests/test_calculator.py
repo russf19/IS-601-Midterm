@@ -32,10 +32,13 @@ def test_divide_by_zero():
         CalculationCommand.divide(1, 0)
 
 def test_history():
-    #Tests retrieving hprevious calculations
     History.clear_history()
     CalculationCommand.add(10, 20)
-    assert "Added 10 to 20 got 30" in History.get_history()
+    history_output = History.get_history()
+    # Defines the expected output based on the format of the history DataFrame's string representation
+    expected_output_part = "Add    10.0    20.0    30.0"
+    # Check to see if the expected part is in the history output
+    assert expected_output_part in history_output, f"Expected '{expected_output_part}' to be in history, but it wasn't. History output: '{history_output}'"
 
 def test_greet():
     #Tests to see if greet command works
