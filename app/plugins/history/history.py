@@ -12,16 +12,20 @@ class History:
 
     @classmethod
     def add_history(cls, operation, a, b, result):
-        # Create a new DataFrame for the new record with explicit data types
-        new_record = pandas.DataFrame({
-            'Operation': [operation],
-            'Value1': [a],
-            'Value2': [b],
-            'Result': [result]
-        }).astype(cls.dtypes)
-
-        # Use concat to add the new record to the existing DataFrame
-        cls.history_df = pandas.concat([cls.history_df, new_record], ignore_index=True)
+        # Checks to see if the record already exists in the DataFrame, this is to avoid duplicates.
+        if not ((cls.history_df['Operation'] == operation) & 
+                (cls.history_df['Value1'] == a) & 
+                (cls.history_df['Value2'] == b) & 
+                (cls.history_df['Result'] == result)).any():
+       
+        # If not, creates a new record
+            new_record = pandas.DataFrame({
+                'Operation': [operation],
+                'Value1': [a],
+                'Value2': [b],
+                'Result': [result]
+            }, columns=['Operation', 'Value1', 'Value2', 'Result'])
+            cls.history_df = pandas.concat([cls.history_df, new_record], ignore_index=True)
 
     @classmethod
     def get_history(cls):

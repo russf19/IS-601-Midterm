@@ -2,6 +2,3 @@
 
 This is my midterm project for IS601. This calculator is a continuation of the previous calculator assignments.
 
-
-
-Added GitHub Actions and Logging features.

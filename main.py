@@ -5,7 +5,6 @@ import logging.config
 from dotenv import load_dotenv
 from app.commands.command.command import Command
 
-
 class CalculatorApp:
     def __init__(self):
         self.commands = {}
@@ -86,6 +85,7 @@ def main():
         command = app.get_command(command_name)
 
         if not command:
+            logging.error(f"Invalid commmand entered: {command_name}")
             print("Error. This is not a valid command.")
             continue
 
