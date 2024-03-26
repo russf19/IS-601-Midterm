@@ -1,7 +1,7 @@
 import pandas
 
 class History:
-    # Define data types explicitly
+    # Defines data types explicitly
     dtypes = {
         'Operation': 'str',
         'Value1': 'float',
@@ -18,7 +18,7 @@ class History:
                 (cls.history_df['Value2'] == b) & 
                 (cls.history_df['Result'] == result)).any():
        
-        # If not, creates a new record
+        # If nota duplicate, creates a new record
             new_record = pandas.DataFrame({
                 'Operation': [operation],
                 'Value1': [a],
