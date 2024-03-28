@@ -77,7 +77,6 @@ def main():
             first_run = False
 
         command_input = input("Enter a command: ").strip().lower()
-        logging.warning(f"Warning: Not a command.")
         if not command_input:
             continue
 
