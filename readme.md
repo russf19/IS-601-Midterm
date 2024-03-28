@@ -38,7 +38,7 @@ Logging is used in main.py to greet users when they first start up the calculato
 
 ![image](https://github.com/russf19/IS-601-Midterm/assets/83291984/acb41c0f-7847-4739-a8ca-e46a25698476)
 
-![image](https://github.com/russf19/IS-601-Midterm/assets/83291984/a75cc435-cfa6-484e-afa5-680d5c28355f)
+![image](https://github.com/russf19/IS-601-Midterm/assets/83291984/b7afa094-058d-4fb0-bf14-5ee96eb37172)
 
 Link to code: https://github.com/russf19/IS-601-Midterm/blob/master/main.py
 
