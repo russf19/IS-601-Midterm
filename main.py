@@ -54,7 +54,7 @@ class CalculatorApp:
 def menu(commands):
     print("\nMy Calculator Commands:")
     # exclude these commands
-    exclude_commands = ['calculation', '']
+    exclude_commands = ['calculation', 'addhistory', '']
     for command in sorted(commands.keys()):
         # Only displays the commands if they are not in the exclude list
         if command not in exclude_commands:
