@@ -55,3 +55,7 @@ The code below from my main.py illustrates LBYL as it first checks to see if the
 ![image](https://github.com/russf19/IS-601-Midterm/assets/83291984/88d6cc48-f4e1-4e62-aae5-d3e3da69da22)
 
 Link to code: https://github.com/russf19/IS-601-Midterm/blob/master/main.py
+
+## My Calculator App Video Demonstration
+
+https://github.com/russf19/IS-601-Midterm/assets/83291984/cc230642-d3f2-4324-bc8c-32f68eb88444
